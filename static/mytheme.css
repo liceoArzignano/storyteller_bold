@@ -1,0 +1,47 @@
+.header {
+    background: #ffffff;
+    margin-top: 16px;
+}
+
+.form-box {
+    display: flow-root;
+}
+
+.auth-div {
+    background-color: #f5f5f5;
+    padding: 16px;
+    border-color: #f5f5f5;
+    border-radius: 8px;
+    width: 40%;
+    display: inline-block;
+    float: left;
+}
+
+.message-div {
+    float: right;
+    width: 60%;
+    padding-left: 32px;
+    padding-top: 16px;
+}
+
+.send-btn {
+    float: right;
+    width: 10%;
+}
+
+.input-label {
+    margin-top: 8px
+}
+
+@media screen and (max-width: 480px) {
+    .auth-div, .send-btn {
+        float: none;
+        width: auto;
+    }
+
+    .message-div {
+        float: none;
+        width: auto;
+        padding-left: 0px;
+    }
+}
