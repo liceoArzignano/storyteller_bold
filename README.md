@@ -29,7 +29,7 @@ Per aggiungere un utente, è necessario creare un database di firebase contenten
 Eseguire lo script tramite il comando
 
 ```
-python3 main.py
+gunicorn main:app
 ```
 
 In seguito, aprire l'indirizzo riportato nel browser (di default dovrebbe essere _localhost:5000_)

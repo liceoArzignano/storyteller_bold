@@ -1,4 +1,4 @@
-requests==2.11.1
 Pyrebase==3.0.27
 WTForms==2.1
 Flask==0.12.2
+requests==2.11.1
