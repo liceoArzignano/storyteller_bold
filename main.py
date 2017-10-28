@@ -40,7 +40,7 @@ def storyteller():
                 news.date = time.strftime("%Y-%m-%d")
                 news.is_private = False
 
-                # firebase.fcm(news, True)
+                firebase.fcm(news, True)
                 flash("Messaggio inviato con successo")
             elif auth == 1:
                 flash("Errore: chiave API non definita")
