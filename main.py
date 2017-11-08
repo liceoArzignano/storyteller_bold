@@ -6,12 +6,17 @@ import time
 
 
 class ReusableForm(Form):
-    username = StringField("Username:", validators=[validators.required()])
+    email = StringField("Email:", validators=[validators.required(), validators.email()])
     password = PasswordField("Password:", validators=[validators.required()])
 
     title = StringField("Title:", validators=[validators.required()])
     message = StringField("Message:", validators=[validators.required()])
     url = StringField("Url:", validators=[validators.URL])
+
+
+def message_with_signature(message: str, email: str):
+    user = email.split("@")[0]
+    return message + "\nInviato da " + user + "."
 
 
 DEBUG = True
@@ -24,32 +29,31 @@ app.config['SECRET_KEY'] = '74d41f27d661f11567a4abf2b6176a'
 def storyteller():
     form = ReusableForm(request.form)
 
-    print(form.errors)
     if request.method == "POST":
-        username = request.form["username"]
-        password = str(request.form["password"])
-
         if form.validate():
-            auth = firebase.database_auth(username, password)
+            email = request.form["email"]
+            password = str(request.form["password"])
+            login = firebase.login(email, password)
 
-            if auth == 0:
+            if login == 0:
                 news = News()
                 news.title = request.form["title"]
-                news.message = request.form["message"]
+                news.message = message_with_signature(request.form["message"], email)
                 news.url = request.form["url"]
                 news.date = time.strftime("%Y-%m-%d")
                 news.is_private = False
 
                 firebase.fcm(news, True)
+                print(news.message)
                 flash("Messaggio inviato con successo")
-            elif auth == 1:
-                flash("Errore: chiave API non definita")
-            elif auth == 2:
-                flash("Errore: nome utente non riconosciuto")
-            elif auth == 3:
+            if login == 1:
                 flash("Errore: nome utente o password errata")
+            elif login == 2:
+                flash("Errore: chiave API non definita")
+            elif login == 3:
+                flash("Errore: account non valido")
         else:
-            flash("Errore: compila tutti i campi")
+            flash("Compila tutti i campi")
 
     return render_template("storyteller.html", form=form)
 
